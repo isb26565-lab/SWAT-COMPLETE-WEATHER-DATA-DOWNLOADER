@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Elite Academy</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .dashboard-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: var(--secondary-color);
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+
+        .stat-card p {
+            color: var(--light-text);
+            margin: 0;
+        }
+
+        .marks-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .marks-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .marks-table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .marks-table th,
+        .marks-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .marks-table tbody tr:hover {
+            background-color: var(--light-bg);
+        }
+
+        .marks-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .grade-a { background-color: #27ae60; }
+        .grade-b { background-color: #3498db; }
+        .grade-c { background-color: #f39c12; }
+        .grade-d { background-color: #e74c3c; }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--secondary-color);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: var(--light-text);
+        }
+
+        .logout-btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .clear-float {
+            clear: both;
+        }
+
+        .average-section {
+            background: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .average-section h3 {
+            color: var(--secondary-color);
+            margin: 0 0 10px 0;
+        }
+
+        .average-section .big-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Elite Academy</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="student-dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            <h1 id="student-name">Student Dashboard</h1>
+            <p id="student-email">Email will appear here</p>
+            <div class="clear-float"></div>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div>📊</div>
+                <h3 id="average-marks">0%</h3>
+                <p>Average Marks</p>
+            </div>
+            <div class="stat-card">
+                <div>📚</div>
+                <h3 id="total-subjects">0</h3>
+                <p>Subjects</p>
+            </div>
+            <div class="stat-card">
+                <div>⭐</div>
+                <h3 id="highest-marks">0%</h3>
+                <p>Highest Score</p>
+            </div>
+            <div class="stat-card">
+                <div>📘</div>
+                <h3 id="lowest-marks">0%</h3>
+                <p>Lowest Score</p>
+            </div>
+        </div>
+
+        <div class="marks-section">
+            <h2>📋 Your Academic Records</h2>
+            
+            <div class="average-section">
+                <h3>Overall Average</h3>
+                <div class="big-number" id="overall-average">0%</div>
+            </div>
+
+            <table class="marks-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Marks Obtained</th>
+                        <th>Total Marks</th>
+                        <th>Percentage</th>
+                        <th>Grade</th>
+                        <th>Progress</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="marks-tbody">
+                    <tr>
+                        <td colspan="7" class="no-data">Loading your marks...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Elite Academy</h4>
+                <p>123 Education Lane, Learning City, LC 12345</p>
+                <p>Phone: (555) 123-4567</p>
+                <p>Email: info@eliteacademy.edu</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Elite Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Check authentication
+        const session = checkAuth('student');
+
+        if (session) {
+            // Load student data
+            document.getElementById('student-name').textContent = session.name + ' - Dashboard';
+            document.getElementById('student-email').textContent = 'Email: ' + session.email;
+
+            // Get student marks
+            const marks = authManager.getStudentMarks(session.userId);
+
+            if (marks.length === 0) {
+                document.getElementById('marks-tbody').innerHTML = '<tr><td colspan="7" class="no-data">No marks recorded yet</td></tr>';
+            } else {
+                // Calculate statistics
+                const total = marks.reduce((sum, m) => sum + m.marks, 0);
+                const average = Math.round((total / (marks.length * 100)) * 10000) / 100;
+                const highestMark = Math.max(...marks.map(m => m.marks));
+                const lowestMark = Math.min(...marks.map(m => m.marks));
+
+                document.getElementById('average-marks').textContent = average.toFixed(1) + '%';
+                document.getElementById('overall-average').textContent = average.toFixed(1) + '%';
+                document.getElementById('total-subjects').textContent = marks.length;
+                document.getElementById('highest-marks').textContent = highestMark + '%';
+                document.getElementById('lowest-marks').textContent = lowestMark + '%';
+
+                // Populate marks table
+                const tbody = document.getElementById('marks-tbody');
+                tbody.innerHTML = '';
+
+                marks.forEach(mark => {
+                    const percentage = (mark.marks / mark.total) * 100;
+                    const grade = getGrade(percentage);
+                    const gradeBadge = `<span class="grade-badge grade-${grade.letter}">${grade.letter}</span>`;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${mark.subject}</strong></td>
+                        <td>${mark.marks}</td>
+                        <td>${mark.total}</td>
+                        <td>${percentage.toFixed(1)}%</td>
+                        <td>${gradeBadge}</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${percentage}%"></div>
+                            </div>
+                        </td>
+                        <td>${mark.date}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        function getGrade(percentage) {
+            if (percentage >= 90) return { letter: 'A', grade: 'Excellent' };
+            if (percentage >= 80) return { letter: 'B', grade: 'Good' };
+            if (percentage >= 70) return { letter: 'C', grade: 'Average' };
+            if (percentage >= 60) return { letter: 'D', grade: 'Below Average' };
+            return { letter: 'F', grade: 'Fail' };
+        }
+    </script>
+</body>
+</html>

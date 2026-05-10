@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Elite Academy</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: var(--secondary-color);
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+
+        .stat-card p {
+            color: var(--light-text);
+            margin: 0;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .tab-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .users-table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .users-table tbody tr:hover {
+            background-color: var(--light-bg);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .delete-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .add-user-form {
+            background: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark-text);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        .add-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .logout-btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .clear-float {
+            clear: both;
+        }
+
+        .success-message {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: var(--light-text);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .role-student { background-color: #3498db; color: white; }
+        .role-teacher { background-color: #9b59b6; color: white; }
+        .role-admin { background-color: #e74c3c; color: white; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Elite Academy</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="admin-dashboard.html" class="active">Admin Dashboard</a></li>
+                <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            <h1>🔐 Admin Dashboard</h1>
+            <p id="admin-name">Administrator</p>
+            <div class="clear-float"></div>
+        </div>
+
+        <div id="success-message" class="success-message"></div>
+        <div id="error-message" class="error-message"></div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div>👨‍🎓</div>
+                <h3 id="total-students">0</h3>
+                <p>Total Students</p>
+            </div>
+            <div class="stat-card">
+                <div>👨‍🏫</div>
+                <h3 id="total-teachers">0</h3>
+                <p>Total Teachers</p>
+            </div>
+            <div class="stat-card">
+                <div>👤</div>
+                <h3 id="total-admins">0</h3>
+                <p>Total Admins</p>
+            </div>
+            <div class="stat-card">
+                <div>📊</div>
+                <h3 id="total-users">0</h3>
+                <p>Total Users</p>
+            </div>
+        </div>
+
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="switchTab('students')">Students</button>
+            <button class="tab-btn" onclick="switchTab('teachers')">Teachers</button>
+            <button class="tab-btn" onclick="switchTab('admins')">Admins</button>
+        </div>
+
+        <!-- Students Tab -->
+        <div id="students" class="tab-content active">
+            <h2>Manage Students</h2>
+            
+            <div class="add-user-form">
+                <h3>Add New Student</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username (e.g., STU004)</label>
+                        <input type="text" id="student-username" placeholder="STU004">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="student-name" placeholder="John Smith">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="student-email" placeholder="john@eliteacademy.edu">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="student-password" placeholder="password123">
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addUser('student')">Add Student</button>
+            </div>
+
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="students-tbody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Teachers Tab -->
+        <div id="teachers" class="tab-content">
+            <h2>Manage Teachers</h2>
+            
+            <div class="add-user-form">
+                <h3>Add New Teacher</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username (e.g., TEACH004)</label>
+                        <input type="text" id="teacher-username" placeholder="TEACH004">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="teacher-name" placeholder="Dr. Robert Johnson">
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" id="teacher-subject" placeholder="Physics">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="teacher-email" placeholder="robert@eliteacademy.edu">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="teacher-password" placeholder="password123">
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addUser('teacher')">Add Teacher</button>
+            </div>
+
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Subject</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="teachers-tbody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Admins Tab -->
+        <div id="admins" class="tab-content">
+            <h2>Manage Admins</h2>
+            
+            <div class="add-user-form">
+                <h3>Add New Admin</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username (e.g., ADMIN002)</label>
+                        <input type="text" id="admin-username" placeholder="ADMIN002">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="admin-name-input" placeholder="Jane Smith">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="admin-email" placeholder="jane@eliteacademy.edu">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="admin-password" placeholder="password123">
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addUser('admin')">Add Admin</button>
+            </div>
+
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admins-tbody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Elite Academy</h4>
+                <p>123 Education Lane, Learning City, LC 12345</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Elite Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Check authentication
+        const session = checkAuth('admin');
+
+        if (session) {
+            document.getElementById('admin-name').textContent = 'Welcome, ' + session.name;
+            loadUsers();
+        }
+
+        function switchTab(tab) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function loadUsers() {
+            const users = authManager.getAllUsers();
+            const stats = authManager.getStatistics();
+
+            // Update statistics
+            document.getElementById('total-students').textContent = stats.totalStudents;
+            document.getElementById('total-teachers').textContent = stats.totalTeachers;
+            document.getElementById('total-admins').textContent = stats.totalAdmins;
+            document.getElementById('total-users').textContent = stats.totalStudents + stats.totalTeachers + stats.totalAdmins;
+
+            // Load students
+            const studentsTbody = document.getElementById('students-tbody');
+            studentsTbody.innerHTML = '';
+            if (users.student && users.student.length > 0) {
+                users.student.forEach(student => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.id}</td>
+                        <td>${student.username}</td>
+                        <td>${student.name}</td>
+                        <td>${student.email}</td>
+                        <td class="action-buttons">
+                            <button class="delete-btn" onclick="deleteUser('student', '${student.id}')">Delete</button>
+                        </td>
+                    `;
+                    studentsTbody.appendChild(row);
+                });
+            } else {
+                studentsTbody.innerHTML = '<tr><td colspan="5" class="no-data">No students</td></tr>';
+            }
+
+            // Load teachers
+            const teachersTbody = document.getElementById('teachers-tbody');
+            teachersTbody.innerHTML = '';
+            if (users.teacher && users.teacher.length > 0) {
+                users.teacher.forEach(teacher => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${teacher.id}</td>
+                        <td>${teacher.username}</td>
+                        <td>${teacher.name}</td>
+                        <td>${teacher.subject}</td>
+                        <td>${teacher.email}</td>
+                        <td class="action-buttons">
+                            <button class="delete-btn" onclick="deleteUser('teacher', '${teacher.id}')">Delete</button>
+                        </td>
+                    `;
+                    teachersTbody.appendChild(row);
+                });
+            } else {
+                teachersTbody.innerHTML = '<tr><td colspan="6" class="no-data">No teachers</td></tr>';
+            }
+
+            // Load admins (except self)
+            const adminsTbody = document.getElementById('admins-tbody');
+            adminsTbody.innerHTML = '';
+            if (users.admin && users.admin.length > 0) {
+                users.admin.forEach(admin => {
+                    const row = document.createElement('tr');
+                    const isCurrentUser = admin.id === session.userId;
+                    row.innerHTML = `
+                        <td>${admin.id}</td>
+                        <td>${admin.username}</td>
+                        <td>${admin.name} ${isCurrentUser ? '(You)' : ''}</td>
+                        <td>${admin.email}</td>
+                        <td class="action-buttons">
+                            ${!isCurrentUser ? `<button class="delete-btn" onclick="deleteUser('admin', '${admin.id}')">Delete</button>` : '<span>-</span>'}
+                        </td>
+                    `;
+                    adminsTbody.appendChild(row);
+                });
+            } else {
+                adminsTbody.innerHTML = '<tr><td colspan="5" class="no-data">No admins</td></tr>';
+            }
+        }
+
+        function addUser(role) {
+            let userData = {};
+            const successMsg = document.getElementById('success-message');
+            const errorMsg = document.getElementById('error-message');
+
+            if (role === 'student') {
+                userData = {
+                    username: document.getElementById('student-username').value,
+                    name: document.getElementById('student-name').value,
+                    email: document.getElementById('student-email').value,
+                    password: document.getElementById('student-password').value
+                };
+            } else if (role === 'teacher') {
+                userData = {
+                    username: document.getElementById('teacher-username').value,
+                    name: document.getElementById('teacher-name').value,
+                    subject: document.getElementById('teacher-subject').value,
+                    email: document.getElementById('teacher-email').value,
+                    password: document.getElementById('teacher-password').value
+                };
+            } else if (role === 'admin') {
+                userData = {
+                    username: document.getElementById('admin-username').value,
+                    name: document.getElementById('admin-name-input').value,
+                    email: document.getElementById('admin-email').value,
+                    password: document.getElementById('admin-password').value
+                };
+            }
+
+            // Validation
+            if (!userData.username || !userData.name || !userData.email || !userData.password) {
+                errorMsg.textContent = '⚠️ All fields are required';
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+                return;
+            }
+
+            if (!userData.email.includes('@')) {
+                errorMsg.textContent = '⚠️ Invalid email format';
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+                return;
+            }
+
+            // Add user
+            const newUser = authManager.addUser(role, userData);
+            successMsg.textContent = `✓ ${role.charAt(0).toUpperCase() + role.slice(1)} added successfully (ID: ${newUser.id})`;
+            successMsg.style.display = 'block';
+            errorMsg.style.display = 'none';
+
+            // Clear form
+            if (role === 'student') {
+                document.getElementById('student-username').value = '';
+                document.getElementById('student-name').value = '';
+                document.getElementById('student-email').value = '';
+                document.getElementById('student-password').value = '';
+            } else if (role === 'teacher') {
+                document.getElementById('teacher-username').value = '';
+                document.getElementById('teacher-name').value = '';
+                document.getElementById('teacher-subject').value = '';
+                document.getElementById('teacher-email').value = '';
+                document.getElementById('teacher-password').value = '';
+            } else if (role === 'admin') {
+                document.getElementById('admin-username').value = '';
+                document.getElementById('admin-name-input').value = '';
+                document.getElementById('admin-email').value = '';
+                document.getElementById('admin-password').value = '';
+            }
+
+            // Reload users
+            setTimeout(() => {
+                loadUsers();
+                successMsg.style.display = 'none';
+            }, 2000);
+        }
+
+        function deleteUser(role, userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                authManager.deleteUser(role, userId);
+                document.getElementById('success-message').textContent = '✓ User deleted successfully';
+                document.getElementById('success-message').style.display = 'block';
+                loadUsers();
+                setTimeout(() => {
+                    document.getElementById('success-message').style.display = 'none';
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>

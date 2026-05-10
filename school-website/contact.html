@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Elite Academy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Elite Academy</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <h1>Contact Us</h1>
+        <p>We'd Love to Hear From You</p>
+    </section>
+
+    <section class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="info-card">
+                    <h3>📍 Location</h3>
+                    <p>123 Education Lane</p>
+                    <p>Learning City, LC 12345</p>
+                    <p>United States</p>
+                </div>
+                <div class="info-card">
+                    <h3>📞 Phone</h3>
+                    <p>Main: (555) 123-4567</p>
+                    <p>Admissions: (555) 123-4568</p>
+                    <p>Fax: (555) 123-4569</p>
+                </div>
+                <div class="info-card">
+                    <h3>📧 Email</h3>
+                    <p>General: info@eliteacademy.edu</p>
+                    <p>Admissions: admissions@eliteacademy.edu</p>
+                    <p>Support: support@eliteacademy.edu</p>
+                </div>
+                <div class="info-card">
+                    <h3>🕐 Hours</h3>
+                    <p>Mon - Fri: 8:00 AM - 4:00 PM</p>
+                    <p>Saturday: 9:00 AM - 1:00 PM</p>
+                    <p>Sunday: Closed</p>
+                </div>
+            </div>
+
+            <div class="contact-form-container">
+                <h2>Send us a Message</h2>
+                <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a subject</option>
+                            <option value="admissions">Admissions Inquiry</option>
+                            <option value="academics">Academic Question</option>
+                            <option value="event">Event Information</option>
+                            <option value="facility">Facility Tour</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+                <div id="form-message" style="display:none; margin-top: 20px; padding: 15px; border-radius: 5px;" class="success-message"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="admission-info">
+        <h2>Admissions Information</h2>
+        <div class="admission-container">
+            <div class="admission-item">
+                <h3>Application Process</h3>
+                <ol>
+                    <li>Complete the online or paper application</li>
+                    <li>Submit required documents</li>
+                    <li>Schedule an admission test</li>
+                    <li>Attend an interview</li>
+                    <li>Receive admission decision</li>
+                </ol>
+            </div>
+            <div class="admission-item">
+                <h3>Required Documents</h3>
+                <ul>
+                    <li>Application form</li>
+                    <li>Birth certificate</li>
+                    <li>Previous school transcripts</li>
+                    <li>Proof of address</li>
+                    <li>Parent/Guardian ID</li>
+                    <li>Medical records</li>
+                </ul>
+            </div>
+            <div class="admission-item">
+                <h3>Tuition & Fees</h3>
+                <p>For detailed information about tuition, scholarships, and financial aid options, please contact our admissions office at:</p>
+                <p><strong>admissions@eliteacademy.edu</strong></p>
+                <p><strong>(555) 123-4568</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-section">
+        <h2>Find Us</h2>
+        <p>Visit our campus located in the heart of Learning City</p>
+        <div class="map-placeholder">
+            <p>📍 Interactive Map Coming Soon</p>
+            <p>123 Education Lane, Learning City, LC 12345</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Elite Academy</h4>
+                <p>123 Education Lane, Learning City, LC 12345</p>
+                <p>Phone: (555) 123-4567</p>
+                <p>Email: info@eliteacademy.edu</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Elite Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
