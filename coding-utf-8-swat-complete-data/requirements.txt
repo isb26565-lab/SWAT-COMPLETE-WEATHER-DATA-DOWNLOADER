@@ -1,0 +1,13 @@
+numpy
+pandas
+geopandas
+xarray
+requests
+shapely
+rasterio
+imdlib
+netCDF4
+openpyxl
+xlsxwriter
+scipy
+rioxarray
